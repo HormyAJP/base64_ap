@@ -13,7 +13,6 @@
 
 // Mask used in calculating base64 rep
 const uint32_t M00111111 = 63;
-const uint32_t M00000011 = 3;
 
 // For each 3 input bytes, there are 4 output chars...
 static const size_t BYTE_BUFFER_SIZE = 1024 * 3;
@@ -87,9 +86,9 @@ void decode(void) {
             char d3 = char_to_int(base64[inbufPos + 2]);
             char d4 = char_to_int(base64[inbufPos + 3]);
             
-            bytes[outbufPos+2] = (d3 << 6) | d4;
-            bytes[outbufPos+1] = (d3 >> 2) | d2 << 4;
-            bytes[outbufPos] = (M00000011 & d2 >> 4) | (d1 << 2);
+            bytes[outbufPos+2] = d3 << 6 | d4;
+            bytes[outbufPos+1] = d3 >> 2 | d2 << 4;
+            bytes[outbufPos] = d2 >> 4 | d1 << 2;
             // Increment here rather than in the for loop so outbufPos always points to end of buffer
             outbufPos += 3;
         }
